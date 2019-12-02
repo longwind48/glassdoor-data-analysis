@@ -13330,7 +13330,7 @@ $( document ).ready(function(){
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[174]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">convert_html_to_text</span><span class="p">(</span><span class="n">html_string</span><span class="p">):</span>
@@ -13339,6 +13339,37 @@ $( document ).ready(function(){
     <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span>
     <span class="k">return</span> <span class="n">soup</span>
+
+<span class="k">def</span> <span class="nf">find_education_content</span><span class="p">(</span><span class="n">somestring</span><span class="p">):</span>
+    <span class="n">output_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">somestring</span> <span class="o">=</span> <span class="n">somestring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">output_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(bachelor|master|phd|mba|ms\.{0,1}c|bs\.{0,1}c)&#39;</span><span class="p">,</span> <span class="n">somestring</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+    <span class="n">output_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output_list</span> <span class="k">if</span> <span class="n">x</span><span class="p">]))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">clean_education</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_list</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;others&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+<span class="k">def</span> <span class="nf">clean_education</span><span class="p">(</span><span class="n">somestring</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">&#39;mba&#39;</span> <span class="ow">in</span> <span class="n">somestring</span><span class="p">:</span>
+        <span class="n">somestring</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;mba&#39;</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span> <span class="n">somestring</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;ms&#39;</span> <span class="ow">in</span> <span class="n">somestring</span><span class="p">:</span>
+        <span class="n">somestring</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;ms\.{0,2}c&#39;</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span> <span class="n">somestring</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;bs&#39;</span> <span class="ow">in</span> <span class="n">somestring</span><span class="p">:</span>
+        <span class="n">somestring</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;bs\.{0,2}c&#39;</span><span class="p">,</span> <span class="s1">&#39;bachelor&#39;</span><span class="p">,</span> <span class="n">somestring</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">somestring</span>
+
+<span class="k">def</span> <span class="nf">find_requirement_content</span><span class="p">(</span><span class="n">somestring</span><span class="p">):</span>
+    <span class="n">output_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">somestring</span> <span class="o">=</span> <span class="n">somestring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">output_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(python|sql|excel|machine learning|deep learning|math|statistics|tableau|linux|development)&#39;</span><span class="p">,</span> <span class="n">somestring</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+    <span class="n">output_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output_list</span> <span class="k">if</span> <span class="n">x</span><span class="p">]))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;others&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">output</span>
 
 <span class="k">def</span> <span class="nf">find_work_experience_content</span><span class="p">(</span><span class="n">somestring</span><span class="p">):</span>
     <span class="n">output_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13384,7 +13415,7 @@ $( document ).ready(function(){
              <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span> <span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="s2">&quot;previously&quot;</span><span class="p">,</span> <span class="s2">&quot;shown&quot;</span><span class="p">,</span>
             <span class="s1">&#39;drive&#39;</span><span class="p">,</span> <span class="s1">&#39;driving&#39;</span><span class="p">,</span> <span class="s1">&#39;need&#39;</span><span class="p">,</span> <span class="s1">&#39;understand&#39;</span><span class="p">,</span> <span class="s1">&#39;interesting&#39;</span><span class="p">,</span>
             <span class="s1">&#39;looking&#39;</span><span class="p">,</span> <span class="s1">&#39;excited&#39;</span><span class="p">,</span> <span class="s1">&#39;showcase&#39;</span><span class="p">,</span> <span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="s1">&#39;closely&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;concept&#39;</span><span class="p">,</span> <span class="s1">&#39;consider&#39;</span><span class="p">,</span> <span class="s1">&#39;improve&#39;</span><span class="p">,</span> <span class="s1">&#39;work&#39;</span><span class="p">]</span>
+            <span class="s1">&#39;concept&#39;</span><span class="p">,</span> <span class="s1">&#39;consider&#39;</span><span class="p">,</span> <span class="s1">&#39;improve&#39;</span><span class="p">,</span> <span class="s1">&#39;work&#39;</span><span class="p">,</span> <span class="s1">&#39;system&#39;</span><span class="p">]</span>
 <span class="n">stop_words</span> <span class="o">=</span> <span class="n">stop_words</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">new_words</span><span class="p">)</span>
     
 <span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">somestring</span><span class="p">):</span>
@@ -13415,7 +13446,7 @@ $( document ).ready(function(){
 <span class="n">words_to_exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;experience&#39;</span><span class="p">,</span> <span class="s1">&#39;provide&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;requirement&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;including&#39;</span><span class="p">,</span> <span class="s1">&#39;solution&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;work&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;strategy&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;scientist&#39;</span><span class="p">,</span> <span class="s1">&#39;required&#39;</span><span class="p">,</span> <span class="s1">&#39;working&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;etc&#39;</span><span class="p">,</span> <span class="s1">&#39;job&#39;</span><span class="p">]</span>
+                   <span class="s1">&#39;etc&#39;</span><span class="p">,</span> <span class="s1">&#39;job&#39;</span><span class="p">,</span> <span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="s1">&#39;understanding&#39;</span><span class="p">]</span>
 
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -13426,8 +13457,8 @@ $( document ).ready(function(){
 <span class="k">def</span> <span class="nf">gen_wordcloud</span><span class="p">(</span><span class="n">corpus_string</span><span class="p">,</span> <span class="n">words_to_exclude</span><span class="p">):</span>
     <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1600</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">800</span><span class="p">,</span> 
                     <span class="n">background_color</span> <span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> 
-    <span class="c1">#                 stopwords = set(STOPWORDS), </span>
-                    <span class="n">stopwords</span> <span class="o">=</span> <span class="n">words_to_exclude</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">STOPWORDS</span><span class="p">)),</span>
+<span class="c1">#                     stopwords = stop_words, </span>
+                    <span class="n">stopwords</span> <span class="o">=</span> <span class="n">words_to_exclude</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">stop_words</span><span class="p">)),</span>
                     <span class="n">min_font_size</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">corpus_string</span><span class="p">)</span> 
 
     <span class="c1"># plot the WordCloud image </span>
@@ -13618,6 +13649,32 @@ Name: work_exp, dtype: int64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[175]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;skill_clean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;job_desc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">find_requirement_content</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[176]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;education_clean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;job_desc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">find_education_content</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13634,7 +13691,7 @@ Name: work_exp, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[410]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds_words</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_clean&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Data Scientist&#39;</span><span class="p">][</span><span class="s1">&#39;job_desc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -13649,7 +13706,7 @@ Name: work_exp, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[411]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Keywords in &#39;Data Scientist&#39; Postings</span>
@@ -13672,7 +13729,7 @@ Name: work_exp, dtype: int64</pre>
 
 
 <div class="output_png output_subarea ">
-<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_19_0.png"
+<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_21_0.png"
 >
 </div>
 
@@ -13684,7 +13741,7 @@ Name: work_exp, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[412]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Keywords in &#39;Business Analyst&#39; Postings</span>
@@ -13707,7 +13764,7 @@ Name: work_exp, dtype: int64</pre>
 
 
 <div class="output_png output_subarea ">
-<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_20_0.png"
+<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_22_0.png"
 >
 </div>
 
@@ -13719,7 +13776,7 @@ Name: work_exp, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[413]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Keywords in &#39;Data Analyst&#39; Postings</span>
@@ -13742,7 +13799,7 @@ Name: work_exp, dtype: int64</pre>
 
 
 <div class="output_png output_subarea ">
-<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_21_0.png"
+<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_23_0.png"
 >
 </div>
 
@@ -14038,7 +14095,7 @@ Name: industry, dtype: int64</pre>
 
 
 <div class="output_png output_subarea ">
-<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_29_0.png"
+<img src="gd_data_jobs_analysis_files/gd_data_jobs_analysis_31_0.png"
 >
 </div>
 
@@ -14269,13 +14326,222 @@ if (outputEl) {{
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Skills">Skills<a class="anchor-link" href="#Skills">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[177]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">generate_skill_count</span><span class="p">(</span><span class="n">title_clean</span><span class="p">):</span>
+    <span class="n">nodup_skill_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skill_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_clean&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">title_clean</span><span class="p">][</span><span class="s1">&#39;skill_clean&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">skill_list</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">skill</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+            <span class="n">nodup_skill_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">skill</span><span class="p">)</span>
+    <span class="n">nodup_skill_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">nodup_skill_list</span><span class="p">))</span>
+    <span class="n">skill_count_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodup_skill_list</span><span class="p">}</span>
+
+    <span class="n">df_temp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_clean&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">title_clean</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">df_temp</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+        <span class="n">curr_skill</span> <span class="o">=</span> <span class="n">df_temp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;skill_clean&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">skill_count_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">curr_skill</span><span class="p">:</span>
+                <span class="n">skill_count_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">skill_count_dict</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[179]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">generate_skill_count</span><span class="p">(</span><span class="s1">&#39;Business Analyst&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[179]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;statistics&#39;: 25,
+ &#39;others&#39;: 92,
+ &#39;excel&#39;: 258,
+ &#39;machine learning&#39;: 9,
+ &#39;tableau&#39;: 41,
+ &#39;linux&#39;: 4,
+ &#39;development&#39;: 249,
+ &#39;sql&#39;: 130,
+ &#39;math&#39;: 31,
+ &#39;python&#39;: 36}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[234]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="k">import</span> <span class="n">make_subplots</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">generate_skill_count</span><span class="p">(</span><span class="s1">&#39;Data Scientist&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">specs</span><span class="o">=</span><span class="p">[[{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;domain&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;domain&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;domain&#39;</span><span class="p">}]],</span>
+                    <span class="n">subplot_titles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Data Scientist&#39;</span><span class="p">,</span> 
+                                    <span class="s1">&#39;Business Analyst&#39;</span><span class="p">,</span> 
+                                    <span class="s1">&#39;Data Analyst&#39;</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Pie</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">generate_skill_count</span><span class="p">(</span><span class="s1">&#39;Data Scientist&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                     <span class="n">scalegroup</span><span class="o">=</span><span class="s1">&#39;one&#39;</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Data Scientist&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Pie</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">generate_skill_count</span><span class="p">(</span><span class="s1">&#39;Business Analyst&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> 
+                     <span class="n">scalegroup</span><span class="o">=</span><span class="s1">&#39;two&#39;</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Business Analyst&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Pie</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">generate_skill_count</span><span class="p">(</span><span class="s1">&#39;Data Analyst&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> 
+                     <span class="n">scalegroup</span><span class="o">=</span><span class="s1">&#39;three&#39;</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Data Analyst&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">showline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">showticklabels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;rgb(204, 204, 204)&#39;</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">ticks</span><span class="o">=</span><span class="s1">&#39;outside&#39;</span><span class="p">,</span>
+        <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;rgb(82, 82, 82)&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">zeroline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">showline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">showticklabels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">autoexpand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">l</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">r</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span>
+        <span class="n">t</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Required Skills&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span>
+                                      <span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                      <span class="n">color</span><span class="o">=</span><span class="s1">&#39;rgb(37,37,37)&#39;</span><span class="p">),</span> <span class="p">})</span>
+
+<span class="c1"># fig.update_layout(annotations=annotations)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+
+
+            <div id="00b29caf-b969-4d70-a4d2-127d76d91d51" class="plotly-graph-div" style="height:600px; width:900px;"></div>
+            <script type="text/javascript">
+                require(["plotly"], function(Plotly) {
+                    window.PLOTLYENV=window.PLOTLYENV || {};
+
+                if (document.getElementById("00b29caf-b969-4d70-a4d2-127d76d91d51")) {
+                    Plotly.newPlot(
+                        '00b29caf-b969-4d70-a4d2-127d76d91d51',
+                        [{"domain": {"x": [0.0, 0.2888888888888889], "y": [0.0, 1.0]}, "labels": ["statistics", "others", "excel", "machine learning", "tableau", "deep learning", "linux", "development", "sql", "math", "python"], "name": "Data Scientist", "scalegroup": "one", "type": "pie", "values": [142, 9, 99, 184, 37, 66, 9, 109, 122, 129, 186]}, {"domain": {"x": [0.35555555555555557, 0.6444444444444445], "y": [0.0, 1.0]}, "labels": ["statistics", "others", "excel", "machine learning", "tableau", "deep learning", "linux", "development", "sql", "math", "python"], "name": "Business Analyst", "scalegroup": "two", "type": "pie", "values": [25, 92, 258, 9, 41, 4, 249, 130, 31, 36]}, {"domain": {"x": [0.7111111111111111, 1.0], "y": [0.0, 1.0]}, "labels": ["statistics", "others", "excel", "machine learning", "tableau", "deep learning", "linux", "development", "sql", "math", "python"], "name": "Data Analyst", "scalegroup": "three", "type": "pie", "values": [55, 11, 78, 24, 62, 4, 2, 47, 107, 36, 82]}],
+                        {"annotations": [{"font": {"size": 16}, "showarrow": false, "text": "Data Scientist", "x": 0.14444444444444446, "xanchor": "center", "xref": "paper", "y": 1.0, "yanchor": "bottom", "yref": "paper"}, {"font": {"size": 16}, "showarrow": false, "text": "Business Analyst", "x": 0.5, "xanchor": "center", "xref": "paper", "y": 1.0, "yanchor": "bottom", "yref": "paper"}, {"font": {"size": 16}, "showarrow": false, "text": "Data Analyst", "x": 0.8555555555555556, "xanchor": "center", "xref": "paper", "y": 1.0, "yanchor": "bottom", "yref": "paper"}], "autosize": true, "height": 600, "margin": {"autoexpand": false, "l": 20, "r": 160, "t": 110}, "plot_bgcolor": "white", "showlegend": true, "template": {"data": {"bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmapgl"}], "histogram": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "parcoords"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "colorscale": {"diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}, "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "#E5ECF6", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "ternary": {"aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "zerolinecolor": "white", "zerolinewidth": 2}, "yaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "zerolinecolor": "white", "zerolinewidth": 2}}}, "title": {"font": {"color": "rgb(37,37,37)", "family": "Arial", "size": 30}, "text": "Required Skills"}, "width": 900, "xaxis": {"linecolor": "rgb(204, 204, 204)", "linewidth": 2, "showgrid": false, "showline": true, "showticklabels": true, "tickfont": {"color": "rgb(82, 82, 82)", "family": "Arial", "size": 12}, "ticks": "outside"}, "yaxis": {"showgrid": false, "showline": false, "showticklabels": true, "zeroline": false}},
+                        {"responsive": true}
+                    ).then(function(){
+
+var gd = document.getElementById('00b29caf-b969-4d70-a4d2-127d76d91d51');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })
+                };
+                });
+            </script>
+        </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Export-to-HTML">Export to HTML<a class="anchor-link" href="#Export-to-HTML">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert --to html_toc gd_data_jobs_analysis.ipynb
