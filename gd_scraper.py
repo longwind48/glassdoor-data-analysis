@@ -29,18 +29,6 @@ def handle_exceptions(func):
     return func_wrapper
 
 def get_position_link(url):
-    '''
-
-    This function has for role to send a request to Glassdoor and crawlers for links which have for class 'jobLink'.
-    get_position_links() collects data science applications in every
-    page which get_all_link() asks for
-
-    Args:
-           url: page URL
-
-    returns: Python list:
-            links: all links for job applications present a single page.
-    '''
 
     links = []
     header = _HEADER
@@ -56,18 +44,7 @@ def get_position_link(url):
 
 
 def get_all_links(num_page, url):
-    '''
-    This function is meant to collect all jobs applications and stores the data in
-    a single link for later and faster access.
 
-    Args:
-            num_page: Number of pages get_position_link() function should crawlers in
-            url: The URL of a single page.
-
-    returns: Python List:
-            link: all links which get_position_link() has been crawling in. Links of job applications
-
-    '''
     link = []
     i = 1
     print('Collecting links....')
@@ -126,7 +103,7 @@ def find_date(somejson):
 
 def find_geo(somejson):
     try:
-        geo_tuple = (re.findall(r'''"latitude"\s*:\s*"([^"]*)"''', somejson, re.I)[0], 
+        geo_tuple = (re.findall(r'''"latitude"\s*:\s*"([^"]*)"''', somejson, re.I)[0],
                     re.findall(r'''"longitude"\s*:\s*"([^"]*)"''', somejson, re.I)[0])
     except:
         geo_tuple = ('empty', 'empty')
@@ -155,10 +132,6 @@ def find_company(somejson):
     return company
 
 if __name__ == '__main__':
-    # This link is aimed to start scraping data science jobs. If you would like to scarp data related to another type of job,
-    # you should then copy the link of the desired type of job (i.e, Software engineering) from glassdoor and past the link
-    # into get_all_links() function.
-    # 30 is the number of pages. There are around 60 positions in every page.
     num_pages = 29
     links = get_all_links(
         num_pages, 'https://www.glassdoor.sg/Job/singapore-business-analyst-jobs-SRCH_IL.0,9_IC3235921_KO10,26.htm')
@@ -181,5 +154,5 @@ if __name__ == '__main__':
     list_result = [x for x in list_result if x]
     df_glass = pd.DataFrame.from_records(list_result)
     df_glass = df_glass[df_glass['title'] != 'empty']
-    
+
     df_glass.to_csv('ba_glassdoor_p{}_{}.csv'.format(num_pages, datetime.now().date()))
